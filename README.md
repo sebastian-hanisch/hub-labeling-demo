@@ -1,5 +1,7 @@
 # Hub Labeling – jede Abfrage ist ein Listen-Merge – Streamlit-Demo
 
+**[→ Demo live ausprobieren](https://sebastianhanisch-2hop-labeling-demo.streamlit.app/)**
+
 Zehntes Stück der Kürzeste-Wege-Linie der "Konzepte"-Reihe für die Website "Sebastian Hanisch – Operations Research und Machine Learning", Kind von [Contraction Hierarchies](../contraction-hierarchies-demo):
 anders als die Fall-Demos im Portfolio (ein Anwendungsfall, mehrere Verfahren im Vergleich) zeigt diese Demo **ein** Verfahren – **Hub Labeling** – an einem wachsenden Beispiel.
 Eine Contraction Hierarchy beschleunigt Dijkstra, indem sie nur noch aufwärts sucht – aber sie sucht noch im Graphen. Beim Hub Labeling wird diese Suche **vorweggenommen**: jeder Knoten bekommt eine kurze Liste von **Hubs** (wichtigen Knoten) samt Entfernung, so dass für jedes Paar
