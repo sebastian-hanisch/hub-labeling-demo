@@ -25,6 +25,7 @@ from hl_presets import (
     init_session_state_defaults,
     load_permalink_settings,
     randomize_seed,
+    seed_widget,
     sync_query_params,
 )
 from hl_scenario import make_network
@@ -133,15 +134,18 @@ with st.sidebar:
     order = st.selectbox("Ordnung der Hubs", tuple(C.ORDER_LABELS), key="order_select", format_func=lambda k: C.ORDER_LABELS[k],
                          help="Welche Knoten die wichtigsten Hubs sind. Die Antworten hängen nicht davon ab - nur die Größe der Labels: im 20 × 20-Stadtnetz (Mittel über fünf Netze) im Mittel 23.7 Einträge je Label mit der CH-Ordnung, 35.8 nach Grad, 40.3 zufällig.")
     if net_key == "city":
+        seed_widget("side_slider")
         side = st.slider("Kreuzungen je Seite", *bounds("side_slider"), key="side_slider",
                          help="Größe des Rasters: n = Seite² Knoten. Mittlere Labelgröße (CH-Ordnung, Mittel über fünf Netze) bei 6 / 10 / 14 / 20 Kreuzungen je Seite: 6.8 / 12.4 / 17.0 / 23.7 Einträge - sie wächst viel langsamer als die Knotenzahl.")
         st.session_state[KEPT["side_slider"]] = side
     else:
         side = int(st.session_state.get(KEPT["side_slider"], C.DEFAULT_SIDE))
     if net_key == "random":
+        seed_widget("nodes_slider")
         nodes = st.slider("Knoten", *bounds("nodes_slider"), key="nodes_slider", step=10,
                           help="Anzahl der Knoten n. Mittlere Labelgröße (CH-Ordnung, Mittel über fünf Netze) bei 50 / 100 / 200 / 300 Knoten: 6.1 / 8.7 / 12.8 / 16.0.")
         st.session_state[KEPT["nodes_slider"]] = nodes
+        seed_widget("degree_slider")
         degree = st.slider("Mittlerer Grad", *bounds("degree_slider"), key="degree_slider", step=0.5,
                            help="Kanten je Knoten. Mittlere Labelgröße bei 200 Knoten und Grad 2 / 3 / 4 / 6 (Mittel über fünf Netze): 5.5 / 12.8 / 17.1 / 20.5 - dichtere Netze brauchen größere Labels.")
         st.session_state[KEPT["degree_slider"]] = degree
@@ -149,9 +153,11 @@ with st.sidebar:
         nodes = int(st.session_state.get(KEPT["nodes_slider"], C.DEFAULT_NODES))
         degree = float(st.session_state.get(KEPT["degree_slider"], C.DEFAULT_DEGREE))
     if net_key in ("city", "random"):
+        seed_widget("distance_slider")
         distance = st.slider("Entfernung des Paares [Perzentil]", *bounds("distance_slider"), key="distance_slider", step=5,
                              help="Das Ziel liegt so weit vom Start entfernt, wie es dem Perzentil aller Entfernungen von diesem Start entspricht: 0 = der nächste Knoten, 100 = der am weitesten entfernte.")
         st.session_state[KEPT["distance_slider"]] = distance
+        seed_widget("seed_input")
         seed = st.number_input("Zufalls-Seed", *bounds("seed_input"), key="seed_input", step=1)
         st.session_state[KEPT["seed_input"]] = seed
         st.button("🎲 Neues Netz generieren", width="stretch", on_click=randomize_seed, help="Würfelt einen neuen Zufalls-Seed für das Netz.")
